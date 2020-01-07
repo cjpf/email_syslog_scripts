@@ -15,9 +15,9 @@ def processArgs():
     except getopt.GetoptError:
         usage(2)
     for opt, arg in opts:
-        if opt in ("-h", "--h"):
+        if opt in ("-h"):
             usage(0)
-        elif opt in ("-l", "--log"):
+        elif opt in ("-l"):
             logfile = arg
         else:
             usage(0)
