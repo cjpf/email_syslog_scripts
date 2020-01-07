@@ -30,6 +30,16 @@ def usage(code):
     print('message_catcher.py -l <logfile>')
     sys.exit(code)
 
+# Writes the position of the log file 
+def writePosition(posfile, pos):
+    with open(posfile, 'w') as file:
+        file.write(str(pos))
+
+# Reads the previous position of the log file
+def getPosition(posfile):
+    with open(posfile, 'r') as file:
+        return int(file.read())
+
 
 # MAIN
 log = open(processArgs(), "r")
