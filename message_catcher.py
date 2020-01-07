@@ -41,7 +41,7 @@ def getPosition(posfile):
         return int(file.read())
 
 
-# MAIN
+# SETUP
 # Process arguments to get the logfile 
 logfile = processArgs()
 # Open the logfile
@@ -51,23 +51,29 @@ log = open(logfile, "r")
 positionfile = '/tmp/message_catcher_position'
 
 if os.stat(positionfile).st_size == 0:
-    #print("Setting position to 0")
     position = 0
 else:
-    #print("Getting position from file")
     position = getPosition(positionfile)
 
+# Move log file to the position
 log.seek(position)
 
-
+# MAIN LOOP
 while 1:
+    # Parsing Interval
     time.sleep(0.1)
+    # Update the previous position in system file
     writePosition(positionfile, position)
+    # Get new position
     position = log.tell()
+    # Get new line
     line = log.readline()
+    # If line is empty, return to position and wait
     if not line:
         log.seek(position)
-    else:
+        time.sleep(3)
+    # If there is a line of data, parse out the JSON and decode it for storage.
+    else: 
         data = re.findall('\{.*\}', line)
         data = json.loads(data[0])
         print(data)
