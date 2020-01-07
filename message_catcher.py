@@ -76,5 +76,5 @@ while 1:
     else: 
         data = re.findall('\{.*\}', line)
         data = json.loads(data[0])
-        print(data)
+        print(json.dumps(data, indent=2))
 
