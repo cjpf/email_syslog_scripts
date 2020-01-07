@@ -27,7 +27,8 @@ def processArgs():
 def usage(code):
     if type(code) != type(1):
         code = 2
-    print('message_catcher.py -l <logfile>')
+    print('Invalid arguments.')
+    print('usage: message_catcher.py -l <logfile>')
     sys.exit(code)
 
 # Writes the position of the log file 
