@@ -34,9 +34,10 @@ def usage(code):
 # MAIN
 log = open(processArgs(), "r")
 
+
 data = log.readlines()
 
-
+# this is junk
 while 1:
     time.sleep(5)
     pointer = log.tell()
