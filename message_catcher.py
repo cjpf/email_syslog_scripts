@@ -3,7 +3,7 @@
 # January 2020
 # This script will read an ESS syslog file and parse each new line of the file.  It writes the position of the log each time a message is recorded to keep it's place so that
 # it does not parse entries more than once.
-import sys, getopt, re, json, time
+import sys, getopt, re, json, time, os
 
 # Process Arguments
 def processArgs():
@@ -42,18 +42,31 @@ def getPosition(posfile):
 
 
 # MAIN
-log = open(processArgs(), "r")
+# Process arguments to get the logfile 
+logfile = processArgs()
+# Open the logfile
+log = open(logfile, "r")
+
+# Get the previously read position of the logfile or start at the top
+positionfile = '/tmp/message_catcher_position'
+
+if os.stat(positionfile).st_size == 0:
+    #print("Setting position to 0")
+    position = 0
+else:
+    #print("Getting position from file")
+    position = getPosition(positionfile)
+
+log.seek(position)
 
 
-data = log.readlines()
-
-# this is junk
 while 1:
-    time.sleep(5)
-    pointer = log.tell()
+    time.sleep(0.1)
+    writePosition(positionfile, position)
+    position = log.tell()
     line = log.readline()
     if not line:
-        log.seek(pointer)
+        log.seek(position)
     else:
         data = re.findall('\{.*\}', line)
         data = json.loads(data[0])
