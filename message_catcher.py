@@ -59,7 +59,7 @@ position = getPosition(positionfile)
 # MAIN LOOP
 while 1:
     # Parsing Interval
-    time.sleep(0.1)
+    #time.sleep(0.1)
     # Open the log
     log = open(logpath, 'r')
     # Seek to position
