@@ -11,7 +11,6 @@ It writes the position of the log each time a message is recorded to keep it's
 place so that it does not parse entries more than once.
 """
 import sys
-import getopt
 import re
 import json
 import time
