@@ -1,8 +1,15 @@
-#!/usr/bin/python3
-# CJ Pfenninger
-# January 2020
-# This script will read an ESS syslog file and parse each new line of the file.  It writes the position of the log each time a message is recorded to keep it's place so that
-# it does not parse entries more than once.
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+This script will read an ESS syslog file and parse each new line of the file.  
+
+CJ Pfenninger
+January 2020
+
+It writes the position of the log each time a message is recorded to keep it's 
+place so that it does not parse entries more than once.
+"""
 import sys
 import getopt
 import re
@@ -10,8 +17,10 @@ import json
 import time
 import os
 
+
 def process_args():
-    if(len(sys.argv) == 1):
+    """This function will process the arguments for the script"""
+    if len(sys.argv) == 1:
         usage(2)
     path = ''
     try:
