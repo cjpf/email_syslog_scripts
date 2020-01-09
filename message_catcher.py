@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-This script will read an ESS syslog file and parse each new line of the file.  
+This script will read an ESS syslog file and parse each new line of the file.
 
 CJ Pfenninger
 January 2020
 
-It writes the position of the log each time a message is recorded to keep it's 
+It writes the position of the log each time a message is recorded to keep it's
 place so that it does not parse entries more than once.
 """
 import sys
@@ -21,9 +21,11 @@ import argparse
 def process_args():
     """This function will process the arguments for the script"""
     parser = argparse.ArgumentParser(
-        prog='message_catcher', description='Process a Barracuda ESS Syslog file')
+        prog='message_catcher',
+        description='Process a Barracuda ESS Syslog file')
     parser.add_argument('-l', '--log', nargs=1, required=True,
-                        help='log file containing syslog data from Barracuda ESS')
+                        help='log file containing syslog data from'
+                        ' Barracuda ESS')
     return parser.parse_args(sys.argv[1:])
 
 
