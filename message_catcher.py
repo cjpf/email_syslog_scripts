@@ -36,22 +36,25 @@ def process_args():
             usage(0)
     return path
 
-# Prints a usage helper and exits
+
 def usage(code):
+    """Prints instructions for how to call this script"""
     if type(code) != type(1):
         code = 2
     print('Invalid arguments.')
     print('usage: message_catcher.py -l <logpath>')
     sys.exit(code)
 
-# Writes the position of the log file
+
 def write_position(posfile, pos):
+    """Writes the position of the log file"""
     with open(posfile, 'w') as file:
         file.write(str(pos))
         file.close()
 
-# Reads the previous position of the log file
+
 def get_position(posfile):
+    """Reads the previous position of the log file"""
     with open(posfile, 'r') as file:
         value = int(file.read())
         file.close()
@@ -59,7 +62,7 @@ def get_position(posfile):
 
 
 # SETUP
-# Process arguments to get the log path and init temp file path
+    """Returns the next line in the file"""
 logpath = process_args()
 positionfile = '/tmp/mcpos'
 
