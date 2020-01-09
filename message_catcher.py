@@ -61,37 +61,30 @@ def get_position(posfile):
         return value
 
 
-# SETUP
+def get_line(datafile, position):
     """Returns the next line in the file"""
+    with open(datafile, 'r') as file:
+        file.seek(position)
+        line = file.readline()
+        position = file.tell()
+        file.close()
+    return line, position
+
 
 def main():
     """."""
     logpath = process_args()
     positionfile = '/tmp/mcpos'
 
-# Create and init temp file if DNE
     if not os.path.isfile(positionfile):
         write_position(positionfile, 0)
 
     position_proc = get_position(positionfile)
-position = get_position(positionfile)
 
-# MAIN LOOP
     while 1:
         data, position_proc = get_line(logpath, position_proc)
         if not data:
-    # Open the log
-    log = open(logpath, 'r')
-    # Seek to position
-    log.seek(position)
-    # Get new line
-    line = log.readline()
-    # Get new position
-    position = log.tell()
-    log.close()
-    if not line:
             time.sleep(3)
-    # If there is a line of data, parse out the JSON and decode it for storage.
         else:
             data = re.findall(r'\{.*\}', data)
             data = json.loads(data[0])
