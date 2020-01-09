@@ -16,34 +16,16 @@ import re
 import json
 import time
 import os
+import argparse
 
 
 def process_args():
     """This function will process the arguments for the script"""
-    if len(sys.argv) == 1:
-        usage(2)
-    path = ''
-    try:
-        opts, _ = getopt.getopt(sys.argv[1:], 'hl:')
-    except getopt.GetoptError:
-        usage(2)
-    for opt, arg in opts:
-        if opt in ("-h"):
-            usage(0)
-        elif opt in ("-l"):
-            path = arg
-        else:
-            usage(0)
-    return path
-
-
-def usage(code):
-    """Prints instructions for how to call this script"""
-    if type(code) != type(1):
-        code = 2
-    print('Invalid arguments.')
-    print('usage: message_catcher.py -l <logpath>')
-    sys.exit(code)
+    parser = argparse.ArgumentParser(
+        prog='message_catcher', description='Process a Barracuda ESS Syslog file')
+    parser.add_argument('-l', '--log', nargs=1, required=True,
+                        help='log file containing syslog data from Barracuda ESS')
+    return parser.parse_args(sys.argv[1:])
 
 
 def write_position(posfile, pos):
@@ -73,16 +55,15 @@ def get_line(datafile, position):
 
 def main():
     """."""
-    logpath = process_args()
+    args = process_args()
     positionfile = '/tmp/mcpos'
-
     if not os.path.isfile(positionfile):
         write_position(positionfile, 0)
 
     position_proc = get_position(positionfile)
 
     while 1:
-        data, position_proc = get_line(logpath, position_proc)
+        data, position_proc = get_line(args.log[0], position_proc)
         if not data:
             time.sleep(3)
         else:
