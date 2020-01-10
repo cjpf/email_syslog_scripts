@@ -16,6 +16,7 @@ import json
 import time
 import os
 import argparse
+import message_store
 
 
 def process_args():
@@ -70,7 +71,7 @@ def main():
         else:
             data = re.findall(r'\{.*\}', data)
             data = json.loads(data[0])
-            print(json.dumps(data, indent=2))
+            message_store.store(data, data.get('message_id'))
             write_position(positionfile, position_proc)
 
 
