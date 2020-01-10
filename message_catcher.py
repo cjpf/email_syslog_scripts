@@ -68,10 +68,16 @@ def main():
         data, position_proc = get_line(args.log[0], position_proc)
         if not data:
             time.sleep(3)
+            print('Displaying ALL DB DATA...')
+            i = 1
+            for row in message_store.read_all():
+                print(i, ': ', row)
+                i += 1
         else:
             data = re.findall(r'\{.*\}', data)
             data = json.loads(data[0])
-            message_store.store(data, data.get('message_id'))
+            # message_store.print_data(data)
+            message_store.store(data)
             write_position(positionfile, position_proc)
 
 
