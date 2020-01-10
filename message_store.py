@@ -11,31 +11,41 @@ January 2020
 Some more detailed description of this script goes here.
 """
 
-import shelve
 import json
+import db_utils
 
 
 def print_data(data):
+    """."""
     print(json.dumps(data, indent=2))
 
 
-def store(data, key):
-    _store_data(data.get('src_ip'), key, 'src_ip_shelf.db')
-    _store_data(data.get('domain_id'), key, 'domain_id_shelf.db')
-    _store_data(data.get('ptr_record'), key, 'ptr_record_shelf.db')
-    _store_data(data.get('attachments'), key, 'attachments_shelf.db')
-    _store_data(data.get('recipients'), key, 'recipients_shelf.db')
-    _store_data(data.get('hdr_to'), key, 'hdr_to_shelf.db')
-    _store_data(data.get('dst_domain'), key, 'dst_domain_shelf.db')
-    _store_data(data.get('subject'), key, 'subject_shelf.db')
-    _store_data(data.get('size'), key, 'size_shelf.db')
-    _store_data(data.get('env_from'), key, 'env_from_shelf.db')
-    _store_data(data.get('timestamp'), key, 'timestamp_shelf.db')
-    print(key, 'stored.')
-    return 0
+def store(data):
+    """."""
+    conn = db_utils.db_connect()
+    cursor = conn.cursor()
+    t = (
+        data.get('message_id'),
+        data.get('src_ip'),
+        data.get('ptr_record'),
+        data.get('env_from'),
+        data.get('hdr_from'),
+        data.get('hdr_to'),
+        data.get('size'),
+        data.get('subject'),
+        data.get('timestamp')
+    )
+    cursor.execute('INSERT INTO mail VALUES (?,?,?,?,?,?,?,?,?)', t)
+    conn.commit()
+    conn.close()
+    return
 
 
-def _store_data(data, key, db_name):
-    db = shelve.open(db_name)
-    db[key] = data
-    db.close()
+def read_all():
+    """."""
+    conn = db_utils.db_connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM mail')
+    data = cursor.fetchall()
+    conn.close()
+    return data
