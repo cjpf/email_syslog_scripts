@@ -20,6 +20,10 @@ def print_data(data):
     print(json.dumps(data, indent=2))
 
 
+def build_store():
+    db_utils.build_tables()
+
+
 def store(data):
     """."""
     conn = db_utils.db_connect()

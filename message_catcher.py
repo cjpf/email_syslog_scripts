@@ -64,6 +64,8 @@ def main():
 
     position_proc = get_position(positionfile)
 
+    message_store.build_store()
+
     while 1:
         data, position_proc = get_line(args.log[0], position_proc)
         if not data:
