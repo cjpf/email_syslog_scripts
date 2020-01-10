@@ -25,13 +25,12 @@ def build_tables():
     conn = db_connect()
     cursor = conn.cursor()
     # Mail Table
-    mail_sql = '''CREATE TABLE mail
+    mail_sql = '''CREATE TABLE IF NOT EXISTS mail
                     (message_id, src_ip, ptr_record, env_from,
                     hdr_from, hdr_to, size, subject, timestamp)'''
     try:
-        print('Creating mail table')
         cursor.execute(mail_sql)
-        print('mail table created')
+        conn.close()
     except sqlite3.OperationalError:
-        print('mail table exists')
+        print('Error creating mail table')
         conn.close()
