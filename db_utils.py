@@ -9,7 +9,7 @@ CJ Pfenninger
 January 2020
 
 """
-DEFAULT_PATH = os.path.join(os.path.dirname(__file__), 'example.sqlite3')
+DEFAULT_PATH = os.path.join(os.path.dirname(__file__), '/tmp/example.sqlite3')
 
 
 def db_connect(db_path=DEFAULT_PATH):
