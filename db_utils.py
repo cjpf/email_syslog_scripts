@@ -20,17 +20,21 @@ def db_connect(db_path=DEFAULT_PATH):
 
 def build_tables():
     """
-    Checks to see if the tables exist and creates them if needed
+    Creates the tables necessary for storing email metadata
     """
     conn = db_connect()
     cursor = conn.cursor()
     # Mail Table
     mail_sql = '''CREATE TABLE IF NOT EXISTS mail
-                    (message_id, src_ip, ptr_record, env_from,
-                    hdr_from, hdr_to, size, subject, timestamp)'''
+                    (
+                    message_id, domain_id, account_id,
+                    src_ip, ptr_record, env_from,
+                    hdr_from, hdr_to, dst_domain, size,
+                    subject, timestamp
+                    )'''
     try:
         cursor.execute(mail_sql)
         conn.close()
-    except sqlite3.OperationalError:
-        print('Error creating mail table')
+    except sqlite3.OperationalError as e:
+        print('Error creating mail table', e)
         conn.close()
