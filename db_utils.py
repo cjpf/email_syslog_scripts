@@ -9,7 +9,7 @@ CJ Pfenninger
 January 2020
 
 """
-DEFAULT_PATH = os.path.join(os.path.dirname(__file__), '/tmp/example.sqlite3')
+DEFAULT_PATH = os.path.join(os.path.dirname(__file__), '/tmp/essmail.sqlite3')
 
 
 def db_connect(db_path=DEFAULT_PATH):
@@ -24,17 +24,42 @@ def build_tables():
     """
     conn = db_connect()
     cursor = conn.cursor()
-    # Mail Table
-    mail_sql = '''CREATE TABLE IF NOT EXISTS mail
+    # Messages Table
+    messages_sql = '''CREATE TABLE IF NOT EXISTS messages
                     (
-                    message_id, domain_id, account_id,
-                    src_ip, ptr_record, env_from,
+                    message_id, src_ip, ptr_record, env_from,
                     hdr_from, hdr_to, dst_domain, size,
                     subject, timestamp
                     )'''
+    # Accounts Table
+    accounts_sql = '''CREATE TABLE IF NOT EXISTS accounts
+                    (
+                    message_id, account_id
+                    )'''
+    # Domains Table
+    domains_sql = '''CREATE TABLE IF NOT EXISTS domains
+                    (
+                    message_id, domain_id
+                    )'''
+    # Recipients Table
+    recipients_sql = '''CREATE TABLE IF NOT EXISTS recipients
+                    (
+                    message_id, action, reason, reason_extra,
+                    delivered, delivery_detail, email
+                    )'''
+    # Attachments Table
+    attachments_sql = '''CREATE TABLE IF NOT EXISTS attachments
+                    (
+                    message_id, name
+                    )'''
+
     try:
-        cursor.execute(mail_sql)
+        cursor.execute(messages_sql)
+        cursor.execute(accounts_sql)
+        cursor.execute(domains_sql)
+        cursor.execute(recipients_sql)
+        cursor.execute(attachments_sql)
         conn.close()
     except sqlite3.OperationalError as e:
-        print('Error creating mail table', e)
+        print('Error creating tables: ', e)
         conn.close()
