@@ -47,7 +47,7 @@ def store(data):
 
     try:
         cursor.execute(
-            'INSERT INTO mail VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', t)
+            'INSERT INTO messages VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', t)
         conn.commit()
         conn.close()
         return cursor.lastrowid
@@ -55,6 +55,21 @@ def store(data):
         conn.rollback()
         conn.close()
         return -1
+
+
+# def _store_message(data):
+
+
+# def _store_account(data):
+
+
+# def _store_domain(data):
+
+
+# def _store_recipients(data):
+
+
+# def _store_attachments(data):
 
 
 # def store_many(data):
