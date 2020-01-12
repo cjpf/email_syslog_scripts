@@ -69,16 +69,45 @@ def main():
     while 1:
         data, position_proc = get_line(args.log[0], position_proc)
         if not data:
-            time.sleep(3)
-            print('Displaying ALL DB DATA...')
+            time.sleep(15)
+
+            print('Displaying MESSAGE TABLE DATA')
+            time.sleep(2)
             i = 1
-            for row in message_store.read_all():
+            for row in message_store.read_messages():
+                print(i, ': ', row)
+                i += 1
+
+            print('Displaying ACCOUNTS TABLE DATA')
+            time.sleep(2)
+            i = 1
+            for row in message_store.read_accounts():
+                print(i, ': ', row)
+                i += 1
+
+            print('Displaying DOMAINS TABLE DATA')
+            time.sleep(2)
+            i = 1
+            for row in message_store.read_domains():
+                print(i, ': ', row)
+                i += 1
+
+            print('Displaying RECIPIENTS TABLE DATA')
+            time.sleep(2)
+            i = 1
+            for row in message_store.read_recipients():
+                print(i, ': ', row)
+                i += 1
+
+            print('Displaying ATTACHMENTS TABLE DATA')
+            time.sleep(2)
+            i = 1
+            for row in message_store.read_attachments():
                 print(i, ': ', row)
                 i += 1
         else:
             data = re.findall(r'\{.*\}', data)
             data = json.loads(data[0])
-            # message_store.print_data(data)
             message_store.store(data)
             write_position(positionfile, position_proc)
 
