@@ -77,14 +77,48 @@ def store(data):
         return -1
 
 
-# def _store_message(data):
+def _store(cur, table, t):
+    """Stores tupled data into a single table"""
+    insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(len(t)), ')'
+    try:
+        cur.execute(''.join(insert_string), t)
+        return cur.lastrowid
+    except sqlite3.OperationalError as e:
+        return e
 
 
 def _store_list(cur, table, message_id, t):
+    """Stores a list of rows into a single table"""
+    if t is None:
+        insert_string = 'INSERT INTO ', table, ' VALUES (?, ?)'
+        try:
+            cur.execute(''.join(insert_string), (message_id, 'NULL'))
+            return cur.lastrowid
+        except sqlite3.OperationalError as e:
+            return e
+
+    for row in t:
+        insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(len(row)+1), ')'
+        data = [message_id]
+        for x in row:
+            data.append(row[x])
+        try:
+            cur.execute(''.join(insert_string), data)
+        except sqlite3.OperationalError as e:
+            print(e)
+            return e
+    return 0
 
 
-# def _store_domain(data):
-
+def _param_string(t):
+    """
+    Builds the string for query parameters
+    Accepts an integer
+    """
+    params = ''
+    for x in range(t):
+        params += '?,'
+    return params.rsplit(',', 1)[0]
 
 
 def read_messages():
