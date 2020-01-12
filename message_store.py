@@ -60,31 +60,58 @@ def store(data):
 # def _store_message(data):
 
 
-# def _store_account(data):
+def _store_list(cur, table, message_id, t):
 
 
 # def _store_domain(data):
 
 
-# def _store_recipients(data):
 
-
-# def _store_attachments(data):
-
-
-# def store_many(data):
-    # """Stores metadata for a list of messages"""
-
-
-# def read(key):
-    # """Retrieves metadata for a single message by message_id
-
-
-def read_all():
-    """Returns all database entries"""
+def read_messages():
+    """Returns all message rows"""
     conn = db_utils.db_connect()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM mail')
+    cursor.execute('SELECT * FROM messages')
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def read_accounts():
+    """Returns all account rows"""
+    conn = db_utils.db_connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM accounts')
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def read_domains():
+    """Returns all domain rows"""
+    conn = db_utils.db_connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM domains')
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def read_recipients():
+    """Returns all recipient rows"""
+    conn = db_utils.db_connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM recipients')
+    data = cursor.fetchall()
+    conn.close()
+    return data
+
+
+def read_attachments():
+    """Returns all attachment rows"""
+    conn = db_utils.db_connect()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM attachments')
     data = cursor.fetchall()
     conn.close()
     return data
