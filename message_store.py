@@ -30,27 +30,47 @@ def store(data):
     """Stores metadata for a single message"""
     conn = db_utils.db_connect()
     cursor = conn.cursor()
-    t = (
-        data.get('message_id'),
-        data.get('domain_id'),
-        data.get('account_id'),
-        data.get('src_ip'),
-        data.get('ptr_record'),
-        data.get('env_from'),
-        data.get('hdr_from'),
-        data.get('hdr_to'),
-        data.get('dst_domain'),
-        data.get('size'),
-        data.get('subject'),
-        data.get('timestamp'),
-    )
-
+    row_ids = {}
     try:
-        cursor.execute(
-            'INSERT INTO messages VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', t)
+        _store(cursor, 'messages', (
+            data.get('message_id'),
+            data.get('src_ip'),
+            data.get('ptr_record'),
+            data.get('env_from'),
+            data.get('hdr_from'),
+            data.get('hdr_to'),
+            data.get('dst_domain'),
+            data.get('size'),
+            data.get('subject'),
+            data.get('timestamp'),
+        ))
+        row_ids['message_row_id'] = cursor.lastrowid
+
+        _store(cursor, 'accounts', (
+            data.get('message_id'),
+            data.get('account_id')
+        ))
+        row_ids['accounts_row_id'] = cursor.lastrowid
+
+        _store(cursor, 'domains', (
+            data.get('message_id'),
+            data.get('domain_id')
+        ))
+        row_ids['domains_row_id'] = cursor.lastrowid
+
+        _store_list(cursor, 'recipients', data.get('message_id'), (
+            data.get('recipients')
+        ))
+        row_ids['recipients_row_id'] = cursor.lastrowid
+
+        _store_list(cursor, 'attachments', data.get('message_id'), (
+            data.get('attachments')
+        ))
+        row_ids['attachments_row_id'] = cursor.lastrowid
+
         conn.commit()
         conn.close()
-        return cursor.lastrowid
+        return row_ids
     except sqlite3.OperationalError:
         conn.rollback()
         conn.close()
