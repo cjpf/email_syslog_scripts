@@ -99,15 +99,20 @@ def _store_list(cur, table, message_id, t):
 
     for row in t:
         insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(len(row)+1), ')'
-        data = [message_id]
-        for x in row:
-            data.append(row[x])
+        data = _convert_data(message_id, row)
         try:
             cur.execute(''.join(insert_string), data)
         except sqlite3.OperationalError as e:
             print(e)
-            return e
+            return -1
     return 0
+
+
+def _convert_data(id, row):
+    data = [id]
+    for x in row:
+        data.append(row[x])
+    return data
 
 
 def _param_string(t):
