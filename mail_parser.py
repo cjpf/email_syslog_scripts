@@ -16,7 +16,7 @@ import json
 import time
 import os
 import argparse
-import message_store
+import mail_store
 
 
 def process_args():
@@ -64,7 +64,7 @@ def main():
 
     position_proc = get_position(positionfile)
 
-    message_store.build_store()
+    mail_store.build_store()
 
     while 1:
         data, position_proc = get_line(args.log[0], position_proc)
@@ -74,41 +74,41 @@ def main():
             print('Displaying MESSAGE TABLE DATA')
             time.sleep(2)
             i = 1
-            for row in message_store.read_messages():
+            for row in mail_store.read_messages():
                 print(i, ': ', row)
                 i += 1
 
             print('Displaying ACCOUNTS TABLE DATA')
             time.sleep(2)
             i = 1
-            for row in message_store.read_accounts():
+            for row in mail_store.read_accounts():
                 print(i, ': ', row)
                 i += 1
 
             print('Displaying DOMAINS TABLE DATA')
             time.sleep(2)
             i = 1
-            for row in message_store.read_domains():
+            for row in mail_store.read_domains():
                 print(i, ': ', row)
                 i += 1
 
             print('Displaying RECIPIENTS TABLE DATA')
             time.sleep(2)
             i = 1
-            for row in message_store.read_recipients():
+            for row in mail_store.read_recipients():
                 print(i, ': ', row)
                 i += 1
 
             print('Displaying ATTACHMENTS TABLE DATA')
             time.sleep(2)
             i = 1
-            for row in message_store.read_attachments():
+            for row in mail_store.read_attachments():
                 print(i, ': ', row)
                 i += 1
         else:
             data = re.findall(r'\{.*\}', data)
             data = json.loads(data[0])
-            message_store.store(data)
+            mail_store.store(data)
             write_position(positionfile, position_proc)
 
 
