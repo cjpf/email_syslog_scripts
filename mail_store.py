@@ -34,6 +34,8 @@ def store(data):
     try:
         _store(cursor, 'messages', (
             data.get('message_id'),
+            data.get('account_id'),
+            data.get('domain_id'),
             data.get('src_ip'),
             data.get('ptr_record'),
             data.get('env_from'),
@@ -45,18 +47,6 @@ def store(data):
             data.get('timestamp'),
         ))
         row_ids['message_row_id'] = cursor.lastrowid
-
-        _store(cursor, 'accounts', (
-            data.get('message_id'),
-            data.get('account_id')
-        ))
-        row_ids['accounts_row_id'] = cursor.lastrowid
-
-        _store(cursor, 'domains', (
-            data.get('message_id'),
-            data.get('domain_id')
-        ))
-        row_ids['domains_row_id'] = cursor.lastrowid
 
         _store_list(cursor, 'recipients', data.get('message_id'), (
             data.get('recipients')
@@ -131,26 +121,6 @@ def read_messages():
     conn = db_utils.db_connect()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM messages')
-    data = cursor.fetchall()
-    conn.close()
-    return data
-
-
-def read_accounts():
-    """Returns all account rows"""
-    conn = db_utils.db_connect()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM accounts')
-    data = cursor.fetchall()
-    conn.close()
-    return data
-
-
-def read_domains():
-    """Returns all domain rows"""
-    conn = db_utils.db_connect()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM domains')
     data = cursor.fetchall()
     conn.close()
     return data

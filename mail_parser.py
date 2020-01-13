@@ -78,20 +78,6 @@ def main():
                 print(i, ': ', row)
                 i += 1
 
-            print('Displaying ACCOUNTS TABLE DATA')
-            time.sleep(2)
-            i = 1
-            for row in mail_store.read_accounts():
-                print(i, ': ', row)
-                i += 1
-
-            print('Displaying DOMAINS TABLE DATA')
-            time.sleep(2)
-            i = 1
-            for row in mail_store.read_domains():
-                print(i, ': ', row)
-                i += 1
-
             print('Displaying RECIPIENTS TABLE DATA')
             time.sleep(2)
             i = 1

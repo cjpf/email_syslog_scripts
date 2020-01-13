@@ -27,19 +27,9 @@ def build_tables():
     # Messages Table
     messages_sql = '''CREATE TABLE IF NOT EXISTS messages
                     (
-                    message_id, src_ip, ptr_record, env_from,
-                    hdr_from, hdr_to, dst_domain, size,
-                    subject, timestamp
-                    )'''
-    # Accounts Table
-    accounts_sql = '''CREATE TABLE IF NOT EXISTS accounts
-                    (
-                    message_id, account_id
-                    )'''
-    # Domains Table
-    domains_sql = '''CREATE TABLE IF NOT EXISTS domains
-                    (
-                    message_id, domain_id
+                    message_id, account_id, domain_id, src_ip,
+                    ptr_record, env_from, hdr_from, hdr_to,
+                    dst_domain, size, subject, timestamp
                     )'''
     # Recipients Table
     recipients_sql = '''CREATE TABLE IF NOT EXISTS recipients
@@ -55,8 +45,6 @@ def build_tables():
 
     try:
         cursor.execute(messages_sql)
-        cursor.execute(accounts_sql)
-        cursor.execute(domains_sql)
         cursor.execute(recipients_sql)
         cursor.execute(attachments_sql)
         conn.close()
