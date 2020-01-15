@@ -1,4 +1,7 @@
 
 .vscode/
 *.db
-__pycache__/message_store.cpython-36.pyc
+__pycache__/
+*.sqlite*
+*.log
+*.pyc
