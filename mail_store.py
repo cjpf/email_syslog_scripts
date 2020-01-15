@@ -11,14 +11,8 @@ January 2020
 Some more detailed description of this script goes here.
 """
 
-import json
 import db_utils
 import sqlite3
-
-
-def print_data(data):
-    """."""
-    print(json.dumps(data, indent=2))
 
 
 def build_store():
@@ -114,33 +108,3 @@ def _param_string(t):
     for x in range(t):
         params += '?,'
     return params.rsplit(',', 1)[0]
-
-
-def read_messages():
-    """Returns all message rows"""
-    conn = db_utils.db_connect()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM messages')
-    data = cursor.fetchall()
-    conn.close()
-    return data
-
-
-def read_recipients():
-    """Returns all recipient rows"""
-    conn = db_utils.db_connect()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM recipients')
-    data = cursor.fetchall()
-    conn.close()
-    return data
-
-
-def read_attachments():
-    """Returns all attachment rows"""
-    conn = db_utils.db_connect()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM attachments')
-    data = cursor.fetchall()
-    conn.close()
-    return data
