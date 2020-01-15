@@ -63,7 +63,8 @@ def store(data):
 
 def _store(cur, table, t):
     """Stores tupled data into a single table"""
-    insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(len(t)), ')'
+    insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(
+        len(t)), ')'
     try:
         cur.execute(''.join(insert_string), t)
         return cur.lastrowid
@@ -82,7 +83,8 @@ def _store_list(cur, table, message_id, t):
             return e
 
     for row in t:
-        insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(len(row)+1), ')'
+        insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(
+            len(row)+1), ')'
         data = _convert_data(message_id, row)
         try:
             cur.execute(''.join(insert_string), data)
