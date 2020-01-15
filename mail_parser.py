@@ -35,14 +35,16 @@ def main():
     mail_store.build_store()
 
     with open(args.log[0], 'r') as log:
-        data = log.readline()
+        while 1:
+            data = log.readline()
 
-        if not data:
-            exit
-        else:
-            data = re.findall(r'\{.*\}', data)
-            data = json.loads(data[0])
-            mail_store.store(data)
+            if not data:
+                log.close()
+                sys.exit(0)
+            else:
+                data = re.findall(r'\{.*\}', data)
+                data = json.loads(data[0])
+                mail_store.store(data)
 
 
 if __name__ == '__main__':
