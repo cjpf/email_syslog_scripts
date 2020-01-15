@@ -2,13 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-This script will accept metadata for an email as sent from Barracuda
-Email Security Service.
+mail_store manages the database interactions for mail_parser
 
 CJ Pfenninger
 January 2020
 
-Some more detailed description of this script goes here.
 """
 
 import db_utils
@@ -16,12 +14,15 @@ import sqlite3
 
 
 def build_store():
-    """."""
+    """
+    calls the build_tables utility
+    tables are only created if they do not yet exist
+    """
     db_utils.build_tables()
 
 
 def store(data):
-    """Stores metadata for a single message"""
+    """stores metadata for a single message"""
     conn = db_utils.db_connect()
     cursor = conn.cursor()
     row_ids = {}
@@ -62,7 +63,7 @@ def store(data):
 
 
 def _store(cur, table, t):
-    """Stores tupled data into a single table"""
+    """stores an object"""
     insert_string = 'INSERT INTO ', table, ' VALUES (', _param_string(
         len(t)), ')'
     try:
@@ -73,7 +74,7 @@ def _store(cur, table, t):
 
 
 def _store_list(cur, table, message_id, t):
-    """Stores a list of rows into a single table"""
+    """stores a list objects"""
     if t is None:
         insert_string = 'INSERT INTO ', table, ' VALUES (?, ?)'
         try:
@@ -95,6 +96,7 @@ def _store_list(cur, table, message_id, t):
 
 
 def _convert_data(id, row):
+    """re-organizes the data for storage"""
     data = [id]
     for x in row:
         data.append(row[x])
@@ -102,10 +104,7 @@ def _convert_data(id, row):
 
 
 def _param_string(t):
-    """
-    Builds the string for query parameters
-    Accepts an integer
-    """
+    """builds query parameters string"""
     params = ''
     for x in range(t):
         params += '?,'

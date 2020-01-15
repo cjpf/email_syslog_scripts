@@ -3,7 +3,7 @@ import os
 import sqlite3
 
 """
-Database utilities for sqlite
+Database utilities for mail_store
 
 CJ Pfenninger
 January 2020
@@ -13,15 +13,13 @@ DEFAULT_PATH = os.path.join(os.path.dirname(__file__), '/tmp/essmail.sqlite3')
 
 
 def db_connect(db_path=DEFAULT_PATH):
-    """Establish and return a connection to the sqlite database"""
+    """establishes and returns a connection to the database"""
     connection = sqlite3.connect(db_path)
     return connection
 
 
 def build_tables():
-    """
-    Creates the tables necessary for storing email metadata
-    """
+    """creates the tables necessary for storing email metadata"""
     conn = db_connect()
     cursor = conn.cursor()
     # Messages Table

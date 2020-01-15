@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-This script will read an ESS syslog file and parse each new line of the file.
+This script will read each line in an ESS syslog data file and stores each
+message's data into a database for future use.
 
 CJ Pfenninger
 January 2020
 
-It writes the position of the log each time a message is recorded to keep it's
-place so that it does not parse entries more than once.
 """
 import sys
 import re
@@ -18,7 +17,7 @@ import mail_store
 
 
 def process_args():
-    """This function will process the arguments for the script"""
+    """processes the arguments given to the parser"""
     parser = argparse.ArgumentParser(
         prog='message_catcher',
         description='Process a Barracuda ESS Syslog file')
@@ -29,7 +28,7 @@ def process_args():
 
 
 def main():
-    """."""
+    """main function - parses and stores data from the log file"""
     args = process_args()
 
     mail_store.build_store()
